@@ -48,7 +48,7 @@ export function ReferralModal({ drawId, drawName, onClose }: { drawId: string; d
   };
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
+    <div className="fixed inset-0 z-100 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
@@ -77,13 +77,13 @@ export function ReferralModal({ drawId, drawName, onClose }: { drawId: string; d
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="friend@example.com"
-              className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-zinc-600 focus:border-amber-400/50 focus:bg-white/10 focus:outline-none"
+              className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder-zinc-500 outline-none transition focus:border-amber-400/50 focus:bg-white/10"
             />
           </div>
           <button
             type="submit"
             disabled={sending}
-            className="w-full rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 py-3 text-sm font-bold text-white transition hover:from-amber-400 hover:to-orange-400 disabled:opacity-50"
+            className="w-full rounded-xl bg-linear-to-r from-amber-500 to-orange-500 py-3 text-sm font-bold text-white transition hover:from-amber-400 hover:to-orange-400 disabled:opacity-50"
           >
             {sending ? "Sending..." : "Send Email"}
           </button>
