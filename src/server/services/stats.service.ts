@@ -59,7 +59,7 @@ export async function getRecentBookings(limit: number = 5): Promise<RecentBookin
       name: firstName,
       city: randomCity,
       tickets: b.ticketCount,
-      drawName: b.drawName,
+      drawName: b.drawName || "Subhlaxmi Special",
       bookedAt: b.bookedAt.toISOString()
     };
   });

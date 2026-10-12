@@ -18,6 +18,7 @@ type RealBooking = {
 export function LiveBookingToast() {
   const realBookingsRef = useRef<RealBooking[]>([]);
   const shownIdsRef = useRef<Set<string>>(new Set());
+  const toastCountRef = useRef(0);
 
   // Fetch real bookings periodically — skip when tab is hidden to save server resources
   useEffect(() => {
@@ -48,14 +49,27 @@ export function LiveBookingToast() {
   const triggerRandomToast = () => {
     toast.dismiss(); // Instantly dismiss all previous toasts
 
-    // Try to get an unshown REAL booking
+    toastCountRef.current += 1;
+    const count = toastCountRef.current;
+
+    // Pehle dummy bookings dikhayenge (initial 3 toasts are strictly dummy).
+    // Uske baad real bookings spaced out hokar aayengi (har 3rd toast par: 4, 7, 10...)
+    // Isse starting mein dummy aayega aur original baad mein, bina lagatar repeat huye.
     let bookingToDisplay: { name: string; city: string; tickets: number; drawName: string } | null = null;
 
-    const unshownReal = realBookingsRef.current.find(b => !shownIdsRef.current.has(b.id));
+    const shouldShowReal = count > 3 && count % 3 === 1;
+    const unshownReal = shouldShowReal
+      ? realBookingsRef.current.find(b => !shownIdsRef.current.has(b.id))
+      : null;
 
     if (unshownReal) {
       shownIdsRef.current.add(unshownReal.id);
-      bookingToDisplay = unshownReal;
+      bookingToDisplay = {
+        name: unshownReal.name,
+        city: unshownReal.city,
+        tickets: unshownReal.tickets,
+        drawName: unshownReal.drawName || "Subhlaxmi Draw",
+      };
       // Optional: limit the size of the set so it doesn't grow infinitely
       if (shownIdsRef.current.size > 100) {
         const firstElements = Array.from(shownIdsRef.current).slice(0, 50);
